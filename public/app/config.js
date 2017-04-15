@@ -6,5 +6,12 @@ angular.module('users').config(['$stateProvider', '$urlRouterProvider',
         $urlRouterProvider.otherwise('/', {
             templateUrl: 'index.html'
         });
+
+        $stateProvider
+            .state('css-helper-class', {
+                url: 'modelos/css-helper-class',
+                templateUrl: 'views/modelos/modelo-css-helper-class.client.view.html'
+            });
+
     }
 ]);
