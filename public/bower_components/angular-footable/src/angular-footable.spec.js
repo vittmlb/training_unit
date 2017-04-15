@@ -1,6 +1,6 @@
 'use strict';
 
-describe('example service - module test', function() {
+describe('example services - module test', function() {
 
     beforeEach(angular.mock.module('ui.footable'));
 
@@ -9,7 +9,7 @@ describe('example service - module test', function() {
         elem = $compile('<table class="footable table" data-sort="false">')($rootScope);
     }));
 
-    it('should have a "example" service', function() {
+    it('should have a "example" services', function() {
         expect(elem.hasClass('footable')).toBeTruthy();
     });
 });

@@ -14,7 +14,7 @@ let session = require('express-session');
 
 module.exports = function() {
 
-    let app = require('express');
+    let app = express();
 
     if(process.env.NODE_env === 'development') {
         app.use(morgan('dev'));

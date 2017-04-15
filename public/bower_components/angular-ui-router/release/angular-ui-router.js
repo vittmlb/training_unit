@@ -1,6 +1,6 @@
 /**
  * State-based routing for AngularJS
- * @version v0.3.2
+ * @version v0.3.0
  * @link http://angular-ui.github.com/
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -220,11 +220,6 @@ function map(collection, callback) {
     result[i] = callback(val, i);
   });
   return result;
-}
-
-// issue #2676 #2889
-function silenceUncaughtInPromise (promise) {
-  return promise.then(undefined, function() {}) && promise;
 }
 
 /**
@@ -543,7 +538,7 @@ function $Resolve(  $q,    $injector) {
    * This is true even for dependencies inherited from a `parent` call to `$resolve`.
    *
    * As a special case, an invocable can be a string, in which case it is taken to 
-   * be a service name to be passed to `$injector.get()`. This is supported primarily 
+   * be a services name to be passed to `$injector.get()`. This is supported primarily
    * for backwards-compatibility with the `resolve` property of `$routeProvider` 
    * routes.
    *
@@ -1271,8 +1266,8 @@ function $UrlMatcherFactory() {
   // If the slashes are simply URLEncoded, the browser can choose to pre-decode them,
   // and bidirectional encoding/decoding fails.
   // Tilde was chosen because it's not a RFC 3986 section 2.2 Reserved Character
-  function valToString(val) { return val != null ? val.toString().replace(/(~|\/)/g, function (m) { return {'~':'~~', '/':'~2F'}[m]; }) : val; }
-  function valFromString(val) { return val != null ? val.toString().replace(/(~~|~2F)/g, function (m) { return {'~~':'~', '~2F':'/'}[m]; }) : val; }
+  function valToString(val) { return val != null ? val.toString().replace(/~/g, "~~").replace(/\//g, "~2F") : val; }
+  function valFromString(val) { return val != null ? val.toString().replace(/~2F/g, "/").replace(/~~/g, "~") : val; }
 
   var $types = {}, enqueue = true, typeQueue = [], injector, defaultTypes = {
     "string": {
@@ -1505,8 +1500,8 @@ function $UrlMatcherFactory() {
    * handle encoding and decoding parameter values:
    *
    * <pre>
-   * // Defines a custom type that gets a value from a service,
-   * // where each service gets different types of values from
+   * // Defines a custom type that gets a value from a services,
+   * // where each services gets different types of values from
    * // a backend API:
    * $urlMatcherFactoryProvider.type('dbObject', {}, function(Users, Posts) {
    *
@@ -1523,7 +1518,7 @@ function $UrlMatcherFactory() {
    *     },
    *     decode: function(value, key) {
    *       // Look up the object by ID, using the parameter
-   *       // name (key) to call the correct service
+   *       // name (key) to call the correct services
    *       return services[key].findById(value);
    *     },
    *     is: function(object, key) {
@@ -1547,7 +1542,7 @@ function $UrlMatcherFactory() {
    *   url: "/{user:dbObject}",
    *   controller: function($scope, $stateParams) {
    *     // $stateParams.user will now be an object returned from
-   *     // the Users service
+   *     // the Users services
    *   },
    *   // ...
    * });
@@ -1983,7 +1978,7 @@ function $UrlRouterProvider(   $locationProvider,   $urlMatcherFactory) {
    * }).run(function ($rootScope, $urlRouter, UserService) {
    *
    *   $rootScope.$on('$locationChangeSuccess', function(e) {
-   *     // UserService is an example service for managing user state
+   *     // UserService is an example services for managing user state
    *     if (UserService.isLoggedIn()) return;
    *
    *     // Prevent $urlRouter's default handler from firing
@@ -2906,12 +2901,10 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
   $get.$inject = ['$rootScope', '$q', '$view', '$injector', '$resolve', '$stateParams', '$urlRouter', '$location', '$urlMatcherFactory'];
   function $get(   $rootScope,   $q,   $view,   $injector,   $resolve,   $stateParams,   $urlRouter,   $location,   $urlMatcherFactory) {
 
-    var TransitionSupersededError = new Error('transition superseded');
-
-    var TransitionSuperseded = silenceUncaughtInPromise($q.reject(TransitionSupersededError));
-    var TransitionPrevented = silenceUncaughtInPromise($q.reject(new Error('transition prevented')));
-    var TransitionAborted = silenceUncaughtInPromise($q.reject(new Error('transition aborted')));
-    var TransitionFailed = silenceUncaughtInPromise($q.reject(new Error('transition failed')));
+    var TransitionSuperseded = $q.reject(new Error('transition superseded'));
+    var TransitionPrevented = $q.reject(new Error('transition prevented'));
+    var TransitionAborted = $q.reject(new Error('transition aborted'));
+    var TransitionFailed = $q.reject(new Error('transition failed'));
 
     // Handles the case where a state which is the target of a transition is not found, and the user
     // can optionally retry or defer the transition
@@ -2967,10 +2960,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
       var retryTransition = $state.transition = $q.when(evt.retry);
 
       retryTransition.then(function() {
-        if (retryTransition !== $state.transition) {
-          $rootScope.$broadcast('$stateChangeCancel', redirect.to, redirect.toParams, state, params);
-          return TransitionSuperseded;
-        }
+        if (retryTransition !== $state.transition) return TransitionSuperseded;
         redirect.options.$retry = true;
         return $state.transitionTo(redirect.to, redirect.toParams, redirect.options);
       }, function() {
@@ -3309,10 +3299,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
       var transition = $state.transition = resolved.then(function () {
         var l, entering, exiting;
 
-        if ($state.transition !== transition) {
-          $rootScope.$broadcast('$stateChangeCancel', to.self, toParams, from.self, fromParams);
-          return TransitionSuperseded;
-        }
+        if ($state.transition !== transition) return TransitionSuperseded;
 
         // Exit 'from' states not kept
         for (l = fromPath.length - 1; l >= keep; l--) {
@@ -3333,10 +3320,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
         }
 
         // Run it again, to catch any transitions in callbacks
-        if ($state.transition !== transition) {
-          $rootScope.$broadcast('$stateChangeCancel', to.self, toParams, from.self, fromParams);
-          return TransitionSuperseded;
-        }
+        if ($state.transition !== transition) return TransitionSuperseded;
 
         // Update globals in $state
         $state.$current = to;
@@ -3371,15 +3355,8 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
         $urlRouter.update(true);
 
         return $state.current;
-      }).then(null, function (error) {
-        // propagate TransitionSuperseded error without emitting $stateChangeCancel
-        // as it was already emitted in the success handler above
-        if (error === TransitionSupersededError) return TransitionSuperseded;
-
-        if ($state.transition !== transition) {
-          $rootScope.$broadcast('$stateChangeCancel', to.self, toParams, from.self, fromParams);
-          return TransitionSuperseded;
-        }
+      }, function (error) {
+        if ($state.transition !== transition) return TransitionSuperseded;
 
         $state.transition = null;
         /**
@@ -3403,7 +3380,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
         evt = $rootScope.$broadcast('$stateChangeError', to.self, toParams, from.self, fromParams, error);
 
         if (!evt.defaultPrevented) {
-          $urlRouter.update();
+            $urlRouter.update();
         }
 
         return $q.reject(error);
@@ -3518,17 +3495,7 @@ function $StateProvider(   $urlRouterProvider,   $urlMatcherFactory) {
       var state = findState(stateOrName, options.relative);
       if (!isDefined(state)) { return undefined; }
       if (!isDefined($state.$current.includes[state.name])) { return false; }
-      if (!params) { return true; }
-
-      var keys = objectKeys(params);
-      for (var i = 0; i < keys.length; i++) {
-        var key = keys[i], paramDef = state.params[key];
-        if (paramDef && !paramDef.type.equals($stateParams[key], params[key])) {
-          return false;
-        }
-      }
-
-      return true;
+      return params ? equalForKeys(state.params.$$values(params), $stateParams, objectKeys(params)) : true;
     };
 
 
@@ -3760,7 +3727,7 @@ function $ViewScrollProvider() {
    * @methodOf ui.router.state.$uiViewScrollProvider
    *
    * @description
-   * Reverts back to using the core [`$anchorScroll`](http://docs.angularjs.org/api/ng.$anchorScroll) service for
+   * Reverts back to using the core [`$anchorScroll`](http://docs.angularjs.org/api/ng.$anchorScroll) services for
    * scrolling based on the url anchor.
    */
   this.useAnchorScroll = function () {
@@ -4019,7 +3986,7 @@ function $ViewDirective(   $state,   $injector,   $uiViewScroll,   $interpolate,
           }
 
           if (currentEl) {
-            var $uiViewData = currentEl.data('$uiViewAnim');
+            var $uiViewData = currentEl.data('$uiView');
             renderer.leave(currentEl, function() {
               $uiViewData.$$animLeave.resolve();
               previousEl = null;
@@ -4032,7 +3999,7 @@ function $ViewDirective(   $state,   $injector,   $uiViewScroll,   $interpolate,
 
         function updateView(firstTime) {
           var newScope,
-              name            = getUiViewName(scope, attrs, $element, $interpolate),
+              name            = getUiViewName(scope, attrs, inherited, $interpolate),
               previousLocals  = name && $state.$current && $state.$current.locals[name];
 
           if (!firstTime && previousLocals === latestLocals) return; // nothing to do
@@ -4055,14 +4022,14 @@ function $ViewDirective(   $state,   $injector,   $uiViewScroll,   $interpolate,
 
           var clone = $transclude(newScope, function(clone) {
             var animEnter = $q.defer(), animLeave = $q.defer();
-            var viewAnimData = {
+            var viewData = {
+              name: name,
               $animEnter: animEnter.promise,
               $animLeave: animLeave.promise,
               $$animLeave: animLeave
             };
 
-            clone.data('$uiViewAnim', viewAnimData);
-            renderer.enter(clone, $element, function onUiViewEnter() {
+            renderer.enter(clone.data('$uiView', viewData), $element, function onUiViewEnter() {
               animEnter.resolve();
               if(currentScope) {
                 currentScope.$emit('$viewContentAnimationEnded');
@@ -4107,14 +4074,14 @@ function $ViewDirectiveFill (  $compile,   $controller,   $state,   $interpolate
       var initial = tElement.html();
       return function (scope, $element, attrs) {
         var current = $state.$current,
-            name = getUiViewName(scope, attrs, $element, $interpolate),
-            locals  = current && current.locals[name];
+            $uiViewData = $element.data('$uiView'),
+            locals  = current && current.locals[$uiViewData.name];
 
         if (! locals) {
           return;
         }
 
-        $element.data('$uiView', { name: name, state: locals.$$state });
+        extend($uiViewData, { state: locals.$$state });
         $element.html(locals.$template ? locals.$template : initial);
 
         var resolveData = angular.extend({}, locals);
@@ -4145,10 +4112,9 @@ function $ViewDirectiveFill (  $compile,   $controller,   $state,   $interpolate
  * Shared ui-view code for both directives:
  * Given scope, element, and its attributes, return the view's name
  */
-function getUiViewName(scope, attrs, element, $interpolate) {
+function getUiViewName(scope, attrs, inherited, $interpolate) {
   var name = $interpolate(attrs.uiView || attrs.name || '')(scope);
-  var uiViewCreatedBy = element.inheritedData('$uiView');
-  return name.indexOf('@') >= 0 ?  name :  (name + '@' + (uiViewCreatedBy ? uiViewCreatedBy.state.name : ''));
+  return name.indexOf('@') >= 0 ?  name :  (name + '@' + (inherited ? inherited.state.name : ''));
 }
 
 angular.module('ui.router.state').directive('uiView', $ViewDirective);
@@ -4301,9 +4267,9 @@ function $StateRefDirective($state, $timeout) {
 
       if (!type.clickable) return;
       hookFn = clickHook(element, $state, $timeout, type, function() { return def; });
-      element[element.on ? 'on' : 'bind']("click", hookFn);
+      element.bind("click", hookFn);
       scope.$on('$destroy', function() {
-        element[element.off ? 'off' : 'unbind']("click", hookFn);
+        element.unbind("click", hookFn);
       });
     }
   };
@@ -4353,9 +4319,9 @@ function $StateRefDynamicDirective($state, $timeout) {
 
       if (!type.clickable) return;
       hookFn = clickHook(element, $state, $timeout, type, function() { return def; });
-      element[element.on ? 'on' : 'bind']("click", hookFn);
+      element.bind("click", hookFn);
       scope.$on('$destroy', function() {
-        element[element.off ? 'off' : 'unbind']("click", hookFn);
+        element.unbind("click", hookFn);
       });
     }
   };
