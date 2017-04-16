@@ -4,6 +4,6 @@
 
 describe('my app', function() {
   beforeEach(function() {
-    browser().navigateTo('../../workbench/index.html');
+    browser().navigateTo('../../workbench/index_old.html');
   });
 });

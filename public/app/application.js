@@ -7,6 +7,7 @@ let mainAppModule = angular.module('training_unit', [
     'ngResource',
     'ngRoute',
     'users',
+    'modelos',
     'toaster',
     'ui.router',
     'ngAnimate',

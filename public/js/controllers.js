@@ -3557,7 +3557,6 @@ angular
     .controller('codeEditorCtrl', codeEditorCtrl)
     .controller('nestableCtrl', nestableCtrl)
     .controller('notifyCtrl', notifyCtrl)
-    .controller('translateCtrl', translateCtrl)
     .controller('imageCrop', imageCrop)
     .controller('diff', diff)
     .controller('idleTimer', idleTimer)

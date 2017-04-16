@@ -1,10 +1,32 @@
+<!--
+*
+* INSPINIA - Responsive Admin Theme
+* Version 2.7
+*
+-->
+
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>rdMate</title>
+
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <!-- Page title set in pageTitle directive -->
+    <title page-title>Training Unit</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font awesome -->
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <!-- Main Inspinia CSS files -->
+    <link href="css/animate.css" rel="stylesheet">
+    <link id="loadBefore" href="css/style.css" rel="stylesheet">
+
     <link rel="stylesheet" href="bower_components/iCheck/skins/all.css">
     <link rel="stylesheet" href="bower_components/angular-datepicker/dist/angular-datepicker.css"> <!-- Angular DatePicker -->
     <link rel="stylesheet" href="bower_components/angular-moment-picker/dist/angular-moment-picker.css"> <!-- Angular-Moment-Picker -->
@@ -16,16 +38,22 @@
     <link rel="stylesheet" href="bower_components/c3/c3.css">
     <link rel="stylesheet" href="bower_components/AngularJS-Toaster/toaster.css">
     <link rel="stylesheet" href="bower_components/metisMenu/dist/metisMenu.css">
-    <link rel="stylesheet" href="css/inspina_style.css">
-    <link rel="stylesheet" href="css/inspina_style_override.css">
-    <link rel="stylesheet" href="css/my_style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.css">
+    <!--<link rel="stylesheet" href="css/inspina_style.css">-->
+    <!--<link rel="stylesheet" href="css/inspina_style_override.css">-->
+    <!--<link rel="stylesheet" href="css/my_style.css">-->
 
+
+</head>
+
+<!-- ControllerAs syntax -->
+<!-- Main controller with serveral data used in Inspinia theme on diferent view -->
+<body landing-scrollspy id="page-top">
+
+<!-- Main view  -->
 <main>
-    <!--<toaster-container></toaster-container>-->
-    <toaster-container toaster-options="{'close-html':'<button>Close</button>',
-    'showCloseButton':true}"></toaster-container>
+    <toaster-container toaster-options="{'close-html':'<button>Close</button>','showCloseButton':true}"></toaster-container>
     <div ng-include="'views/common/content.html'"></div>
 </main>
 
@@ -63,7 +91,7 @@
 <script src="bower_components/angular-footable/dist/angular-footable.min.js"></script>
 
 <!-- Plugins-->
-<script src="https://use.fontawesome.com/f474efa969.js"></script>
+<!--<script src="https://use.fontawesome.com/f474efa969.js"></script>-->
 
 <!-- ngAudio -->
 <script src="bower_components/angular-audio/app/angular.audio.js"></script>
@@ -88,13 +116,23 @@
 <script src="app/users/controllers/users.client.controller.js"></script>
 <script src="app/users/services/users.client.service.js"></script>
 
+<!--Scripts Modelos-->
+<script src="app/modelos/modelos.client.module.js"></script>
+<script src="app/modelos/config/modelos.client.config.js"></script>
+<script src="app/modelos/services/modelos.client.services.js"></script>
+<script src="app/modelos/controllers/modelos.client.controller.js"></script>
 
+
+<!-- Anglar App Script -->
 <script src="app/application.js"></script>
 <script src="app/directives.js"></script>
 <script src="app/config.js"></script>
 <script src="app/inspinia.js"></script>
 <script src="app/controllers.js"></script>
 <script src="app/services.js"></script>
+
+
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQTpXj82d8UpCi97wzo_nKXL7nYrd4G70"></script>
 
 
 </body>

@@ -32,7 +32,7 @@ angular.module('plunker', [])
       };
 
       addField('description', 'http://angular-ui.github.io/bootstrap/');
-      addField('files[index.html]', indexContent(content.markup, version));
+      addField('files[index_old.html]', indexContent(content.markup, version));
       addField('files[example.js]', scriptContent(content.javascript));
 
       $document.find('body').append(form);
