@@ -183,7 +183,7 @@ angular.module('training_unit').factory('MyFlot', [function () {
             {
                 label: "Number of orders",
                 grow:{stepMode:"linear"},
-                data: dataSource.a,
+                data: data2,
                 color: "#1ab394",
                 bars: {
                     show: true,
@@ -196,30 +196,24 @@ angular.module('training_unit').factory('MyFlot', [function () {
             {
                 label: "Payments",
                 grow:{stepMode:"linear"},
-                data: dataSource.b,
+                data: data1,
                 yaxis: 2,
                 color: "#1C84C6",
-                bars: {
+                lines: {
+                    lineWidth: 1,
                     show: true,
-                    align: "center",
-                    barWidth: 24 * 60 * 60 * 600,
-                    lineWidth: 0
+                    fill: true,
+                    fillColor: {
+                        colors: [
+                            {
+                                opacity: 0.2
+                            },
+                            {
+                                opacity: 0.2
+                            }
+                        ]
+                    }
                 }
-                // lines: {
-                //     lineWidth: 1,
-                //     show: true,
-                //     fill: true,
-                //     fillColor: {
-                //         colors: [
-                //             {
-                //                 opacity: 0.2
-                //             },
-                //             {
-                //                 opacity: 0.2
-                //             }
-                //         ]
-                //     }
-                // }
             }
         ];
     }
@@ -426,6 +420,333 @@ angular.module('training_unit').factory('MyFlot', [function () {
     }
 
 }]);
+
+angular.module('training_unit').factory('MyChartJs', [function () {
+    /**
+     * Data for Polar chart
+     */
+    let polarData = [
+        {
+            value: 300,
+            color:"#a3e1d4",
+            highlight: "#1ab394",
+            label: "App"
+        },
+        {
+            value: 140,
+            color: "#dedede",
+            highlight: "#1ab394",
+            label: "Software"
+        },
+        {
+            value: 200,
+            color: "#A4CEE8",
+            highlight: "#1ab394",
+            label: "Laptop"
+        }
+    ];
+
+    /**
+     * Options for Polar chart
+     */
+    let polarOptions = {
+        scaleShowLabelBackdrop : true,
+        scaleBackdropColor : "rgba(255,255,255,0.75)",
+        scaleBeginAtZero : true,
+        scaleBackdropPaddingY : 1,
+        scaleBackdropPaddingX : 1,
+        scaleShowLine : true,
+        segmentShowStroke : true,
+        segmentStrokeColor : "#fff",
+        segmentStrokeWidth : 2,
+        animationSteps : 100,
+        animationEasing : "easeOutBounce",
+        animateRotate : true,
+        animateScale : false
+    };
+
+    /**
+     * Data for Doughnut chart
+     */
+    let doughnutData = [
+        {
+            value: 300,
+            color:"#a3e1d4",
+            highlight: "#1ab394",
+            label: "App"
+        },
+        {
+            value: 50,
+            color: "#dedede",
+            highlight: "#1ab394",
+            label: "Software"
+        },
+        {
+            value: 100,
+            color: "#A4CEE8",
+            highlight: "#1ab394",
+            label: "Laptop"
+        }
+    ];
+
+    /**
+     * Options for Doughnut chart
+     */
+    let doughnutOptions = {
+        segmentShowStroke : true,
+        segmentStrokeColor : "#fff",
+        segmentStrokeWidth : 2,
+        percentageInnerCutout : 45, // This is 0 for Pie charts
+        animationSteps : 100,
+        animationEasing : "easeOutBounce",
+        animateRotate : true,
+        animateScale : false
+    };
+
+    /**
+     * Data for Line chart
+     */
+    let lineData = {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+            {
+                label: "Example dataset",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [65, 59, 80, 81, 56, 55, 40]
+            },
+            {
+                label: "Example dataset",
+                fillColor: "rgba(26,179,148,0.5)",
+                strokeColor: "rgba(26,179,148,0.7)",
+                pointColor: "rgba(26,179,148,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(26,179,148,1)",
+                data: [28, 48, 40, 19, 86, 27, 90]
+            }
+        ]
+    };
+
+    let lineDataDashboard4 = {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+            {
+                label: "Example dataset",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [65, 59, 40, 51, 36, 25, 40]
+            },
+            {
+                label: "Example dataset",
+                fillColor: "rgba(26,179,148,0.5)",
+                strokeColor: "rgba(26,179,148,0.7)",
+                pointColor: "rgba(26,179,148,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(26,179,148,1)",
+                data: [48, 48, 60, 39, 56, 37, 30]
+            }
+        ]
+    };
+
+    /**
+     * Options for Line chart
+     */
+    let lineOptions = {
+        scaleShowGridLines : true,
+        scaleGridLineColor : "rgba(0,0,0,.05)",
+        scaleGridLineWidth : 1,
+        bezierCurve : true,
+        bezierCurveTension : 0.4,
+        pointDot : true,
+        pointDotRadius : 4,
+        pointDotStrokeWidth : 1,
+        pointHitDetectionRadius : 20,
+        datasetStroke : true,
+        datasetStrokeWidth : 2,
+        datasetFill : true
+    };
+
+    /**
+     * Options for Bar chart
+     */
+    let barOptions = {
+        scaleBeginAtZero : true,
+        scaleShowGridLines : true,
+        scaleGridLineColor : "rgba(0,0,0,.05)",
+        scaleGridLineWidth : 1,
+        barShowStroke : true,
+        barStrokeWidth : 2,
+        barValueSpacing : 5,
+        barDatasetSpacing : 1
+    };
+
+    /**
+     * Data for Bar chart
+     */
+    let barData = {
+        labels: ["January", "February", "March", "April", "May", "June", "July"],
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,0.8)",
+                highlightFill: "rgba(220,220,220,0.75)",
+                highlightStroke: "rgba(220,220,220,1)",
+                data: [65, 59, 80, 81, 56, 55, 40]
+            },
+            {
+                label: "My Second dataset",
+                fillColor: "rgba(26,179,148,0.5)",
+                strokeColor: "rgba(26,179,148,0.8)",
+                highlightFill: "rgba(26,179,148,0.75)",
+                highlightStroke: "rgba(26,179,148,1)",
+                data: [28, 48, 40, 19, 86, 27, 90]
+            }
+        ]
+    };
+
+    /**
+     * Data for Radar chart
+     */
+    let radarData = {
+        labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.2)",
+                strokeColor: "rgba(220,220,220,1)",
+                pointColor: "rgba(220,220,220,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(220,220,220,1)",
+                data: [65, 59, 90, 81, 56, 55, 40]
+            },
+            {
+                label: "My Second dataset",
+                fillColor: "rgba(26,179,148,0.2)",
+                strokeColor: "rgba(26,179,148,1)",
+                pointColor: "rgba(26,179,148,1)",
+                pointStrokeColor: "#fff",
+                pointHighlightFill: "#fff",
+                pointHighlightStroke: "rgba(151,187,205,1)",
+                data: [28, 48, 40, 19, 96, 27, 100]
+            }
+        ]
+    };
+
+    /**
+     * Options for Radar chart
+     */
+    let radarOptions = {
+        scaleShowLine : true,
+        angleShowLineOut : true,
+        scaleShowLabels : false,
+        scaleBeginAtZero : true,
+        angleLineColor : "rgba(0,0,0,.1)",
+        angleLineWidth : 1,
+        pointLabelFontFamily : "'Arial'",
+        pointLabelFontStyle : "normal",
+        pointLabelFontSize : 10,
+        pointLabelFontColor : "#666",
+        pointDot : true,
+        pointDotRadius : 3,
+        pointDotStrokeWidth : 1,
+        pointHitDetectionRadius : 20,
+        datasetStroke : true,
+        datasetStrokeWidth : 2,
+        datasetFill : true
+    };
+
+    return {
+
+    }
+
+
+}]);
+
+// angular.module('training_unit').factory('MyData', [function () {
+//
+//     let comments = [
+//         {
+//             from: '@Alan Marry',
+//             comment: 'I belive that. Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+//             time: '1 minute ago'
+//         },
+//         {
+//             from: '@Stock Man',
+//             comment: 'Check this stock chart. This price is crazy!',
+//             time: '2 hours ago'
+//         },
+//         {
+//             from: '@Kevin Smith',
+//             comment: 'Lorem ipsum unknown printer took a galley',
+//             time: '2 minutes ago'
+//         },
+//         {
+//             from: '@Jonathan Febrick',
+//             comment: 'The standard chunk of Lorem Ipsum',
+//             time: '1 hour ago'
+//         },
+//         {
+//             from: '@Alan Marry',
+//             comment: ' I belive that. Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+//             time: '1 minute ago'
+//         },
+//         {
+//             from: '@Kevin Smith',
+//             comment: 'Lorem ipsum unknown printer took a galley',
+//             time: '2 minutes ago'
+//         }
+//     ];
+//
+//     let todoList = [
+//         {
+//             number: 1,
+//             description: 'Please contact me',
+//             time: '09:00 pm'
+//         },
+//         {
+//             number: 2,
+//             description: 'Sign a contract',
+//             time: '10:16 am'
+//         },
+//         {
+//             number: 3,
+//             description: 'Open new shop',
+//             time: '08:22 pm'
+//         },
+//         {
+//             number: 4,
+//             description: 'Call back to Sylvia',
+//             time: '11:06 pm'
+//         },
+//         {
+//             number: 5,
+//             description: 'Write a letter to Sandra',
+//             time: '12:00 am'
+//         }
+//     ];
+//
+//     return {
+//         comments: function() {
+//             return comments;
+//         },
+//         todoList: function() {
+//             return todoList;
+//         }
+//     }
+//
+// }]);
 
 angular.module('training_unit').factory('AppConfig', ['$http', function ($http) {
 

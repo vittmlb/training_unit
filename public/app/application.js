@@ -15,7 +15,7 @@ let mainAppModule = angular.module('training_unit', [
     'ngFileUpload',
     'ngAudio',
     'angularMoment',
-    'angular-flot'
+    'angular-flot',
 ]);
 
 mainAppModule.config(['$locationProvider', function ($locationProvider) {

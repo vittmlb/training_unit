@@ -358,9 +358,189 @@ function ModalInstanceCtrl ($scope, $modalInstance) {
 
 }
 
+function AuxData () {
+
+    let todoList = [
+        {
+            number: 1,
+            description: 'Please contact me',
+            time: '09:00 pm'
+        },
+        {
+            number: 2,
+            description: 'Sign a contract',
+            time: '10:16 am'
+        },
+        {
+            number: 3,
+            description: 'Open new shop',
+            time: '08:22 pm'
+        },
+        {
+            number: 4,
+            description: 'Call back to Sylvia',
+            time: '11:06 pm'
+        },
+        {
+            number: 5,
+            description: 'Write a letter to Sandra',
+            time: '12:00 am'
+        }
+    ];
+    let comments = [
+        {
+            from: '@Alan Marry',
+            comment: 'I belive that. Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            time: '1 minute ago'
+        },
+        {
+            from: '@Stock Man',
+            comment: 'Check this stock chart. This price is crazy!',
+            time: '2 hours ago'
+        },
+        {
+            from: '@Kevin Smith',
+            comment: 'Lorem ipsum unknown printer took a galley',
+            time: '2 minutes ago'
+        },
+        {
+            from: '@Jonathan Febrick',
+            comment: 'The standard chunk of Lorem Ipsum',
+            time: '1 hour ago'
+        },
+        {
+            from: '@Alan Marry',
+            comment: ' I belive that. Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+            time: '1 minute ago'
+        },
+        {
+            from: '@Kevin Smith',
+            comment: 'Lorem ipsum unknown printer took a galley',
+            time: '2 minutes ago'
+        }
+    ];
+    let meetings = [
+        {
+            title: 'Meeting',
+            content: 'Conference on the sales results for the previous year. Monica please examine sales trends in marketing and products. Below please find the current status of the sale.',
+            hour: '6:00 am',
+            time: '2 hours ago'
+        },
+        {
+            title: 'Send documents to Mike',
+            content: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.`,
+            hour: '6:00 am',
+            time: '2 hours ago'
+        },
+        {
+            title: 'Coffee Break',
+            content: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.`,
+            hour: '6:00 am',
+            time: '2 hours ago'
+        },
+        {
+            title: 'Phone with Jeronimo',
+            content: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.`,
+            hour: '6:00 am',
+            time: '2 hours ago'
+        },
+        {
+            title: 'Go to the doctor Dr. Smith',
+            content: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.`,
+            hour: '6:00 am',
+            time: '2 hours ago'
+        },
+        {
+            title: 'Chat with Monica and Sandra',
+            content: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.`,
+            hour: '6:00 am',
+            time: '2 hours ago'
+        },
+
+    ];
+    let dailyFeed = [
+        {
+            img: 'img/profile.jpg',
+            name: 'Monica Shith',
+            action: 'posted a new blog.',
+            marked: '',
+            content: '',
+            time: 'Today 5:60pm - 12.06.2017',
+            hour: '5 min ago',
+            buttons: false
+        },
+        {
+            img: 'img/a2.jpg',
+            name: 'Mark Johnson',
+            action: 'posted message on',
+            marked: 'Monica Smith',
+            content: '',
+            time: 'Today 2:10 pm - 12.06.2017',
+            hour: '5 min ago',
+            buttons: false
+        },
+        {
+            img: 'img/a3.jpg',
+            name: 'Janet Rosowski',
+            action: 'add 1 photo on',
+            marked: 'Monica Smith',
+            content: '',
+            time: '2 days ago at 8:30 am',
+            hour: '5 min ago',
+            buttons: false
+        },
+        {
+            img: 'img/a4.jpg',
+            name: 'Chris Johnatan Overtunk',
+            action: 'started following',
+            marked: 'Monica Smith',
+            content: '',
+            time: 'Yesterday 1:21 pm - 11.06.2017',
+            hour: '5 min ago',
+            buttons: true
+        },
+        {
+            img: 'img/a5.jpg',
+            name: 'Kim Smith',
+            action: 'posted message on',
+            marked: 'Monica Smith',
+            content: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since.`,
+            time: 'Yesterday 5:20 pm - 12.06.2017',
+            hour: '5 min ago',
+            buttons: true
+        },
+        {
+            img: 'img/profile.jpg',
+            name: 'Monica Smith',
+            action: 'love',
+            marked: 'Kim Smith',
+            content: ``,
+            time: '2 days ago at 2:30 am - 11.06.2017',
+            hour: '5 min ago',
+            buttons: false
+        },
+        {
+            img: 'img/a6.jpg',
+            name: 'Mike Loreipsum',
+            action: 'started following',
+            marked: 'Monica Smith',
+            content: '',
+            time: '3 days ago at 7:58 pm - 10.06.2017',
+            hour: '46 hours ago',
+            buttons: false
+        }
+    ];
+
+    this.todoList = todoList;
+    this.comments = comments;
+    this.meetings = meetings;
+    this.dailyFeed = dailyFeed;
+
+}
 
 angular
     .module('training_unit')
     .controller('ModalInstanceCtrl', ModalInstanceCtrl)
     .controller('dashboardFlotOne', dashboardFlotOne)
-    .controller('chartJsCtrl', chartJsCtrl);
+    .controller('AuxData', AuxData);
+    // .controller('chartJsCtrl', chartJsCtrl); // Criei uma Factory em services.js
