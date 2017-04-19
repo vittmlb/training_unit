@@ -16,6 +16,7 @@ let mainAppModule = angular.module('training_unit', [
     'ngAudio',
     'angularMoment',
     'angular-flot',
+    'angles'
 ]);
 
 mainAppModule.config(['$locationProvider', function ($locationProvider) {

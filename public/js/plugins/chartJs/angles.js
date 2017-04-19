@@ -1,4 +1,4 @@
-var angles = angular.module("angles", []);
+let angles = angular.module("angles", []);
 
 angles.chart = function (type) {
     return {
@@ -17,8 +17,8 @@ angles.chart = function (type) {
             legend: "="
         },
         link: function ($scope, $elem) {
-            var ctx = $elem[0].getContext("2d");
-            var autosize = false;
+            let ctx = $elem[0].getContext("2d");
+            let autosize = false;
 
             $scope.size = function () {
                 if ($scope.width <= 0) {
@@ -36,7 +36,7 @@ angles.chart = function (type) {
                     ctx.canvas.height = $scope.height || ctx.canvas.height;
                     autosize = true;
                 }
-            }
+            };
 
             $scope.$watch("data", function (newVal, oldVal) {
                 if(chartCreated)
@@ -51,7 +51,7 @@ angles.chart = function (type) {
                 if(autosize){
                     $scope.size();
                     chart = new Chart(ctx);
-                };
+                }
 
                 if($scope.responsive || $scope.resize)
                     $scope.options.responsive = true;
@@ -72,7 +72,7 @@ angles.chart = function (type) {
                     return;
                 if(!isFinite(newVal) || newVal >= chartCreated.segments.length || newVal < 0)
                     return;
-                var activeSegment = chartCreated.segments[newVal];
+                let activeSegment = chartCreated.segments[newVal];
                 activeSegment.save();
                 activeSegment.fillColor = activeSegment.highlightColor;
                 chartCreated.showTooltip([activeSegment]);
@@ -80,14 +80,14 @@ angles.chart = function (type) {
             }, true);
 
             $scope.size();
-            var chart = new Chart(ctx);
-            var chartCreated;
+            let chart = new Chart(ctx);
+            let chartCreated;
         }
     }
-}
+};
 
 
-/* Aliases for various chart types */
+/* Aliases for letious chart types */
 angles.directive("chart", function () { return angles.chart(); });
 angles.directive("linechart", function () { return angles.chart("Line"); });
 angles.directive("barchart", function () { return angles.chart("Bar"); });
